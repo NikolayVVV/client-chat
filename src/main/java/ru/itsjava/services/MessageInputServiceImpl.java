@@ -6,7 +6,8 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class MessageInputServiceImpl implements MessageInputService {
+public class MessageInputServiceImpl implements MessageInputService {//сервис который занимается
+    //приемом сообщений
     private final BufferedReader bufferedReader;
 
     public MessageInputServiceImpl(InputStream inputStream) {
