@@ -27,22 +27,49 @@ public class ClientServiceImpl implements ClientService {
             MessageInputServiceImpl messageInputService = //сообщения которые считываются
                     new MessageInputServiceImpl(System.in);// с консоли
 
-            System.out.println("Введите свой логин:");
-            String login = messageInputService.getMessage();
 
-            System.out.println("Введите свой пароль:");
-            String password = messageInputService.getMessage();
+//            String authorizationOrRegistration = messageInputService.getMessage();
+//            serverWriter.println(authorization);
+//            serverWriter.flush();
+
+//            String registration = messageInputService.getMessage();
+//            serverWriter.println(registration);
+//            serverWriter.flush();
+
 
             //!autho!login:password
-            serverWriter.println("!autho!" + login + ":" + password);
-            serverWriter.flush();//flush - скинуть буферизированные данные в поток(сразу пишем
+
+            //flush - скинуть буферизированные данные в поток(сразу пишем
             // и отправляем на сервер)
 
+            System.out.println("Введите 1 - для входа или 2 - для регистрации");
             while (true) {
                 String consoleMessage = messageInputService.getMessage();
                 serverWriter.println(consoleMessage);
                 serverWriter.flush();
-                if (messageInputService.getMessage().equals("exit")) {
+                if (consoleMessage.equals("1")) {
+                    System.out.println("Вы выбрали авторизацию");
+                    serverWriter.println("1");
+                    serverWriter.flush();
+                    System.out.println("Введите свой логин:");
+                    String login = messageInputService.getMessage();
+                    System.out.println("Введите свой пароль:");
+                    String password = messageInputService.getMessage();
+                    serverWriter.println("!autho!" + login + ":" + password);
+                    serverWriter.flush();
+                } else if (consoleMessage.equals("2")) {
+                    System.out.println("Вы выбрали регистрацию");
+                    serverWriter.println("2");
+                    serverWriter.flush();
+                    System.out.println("Введите свой логин:");
+                    String login = messageInputService.getMessage();
+                    System.out.println("Введите свой пароль:");
+                    String password = messageInputService.getMessage();
+                    serverWriter.println("!regis!" + login + ":" + password);
+                    serverWriter.flush();
+                    System.out.println("Вы успешно зарегистрированы");
+                    break;
+                } else if (consoleMessage.equals("exit")) {
                     System.out.println("Вы покинули чат");
                     break;
                 }
