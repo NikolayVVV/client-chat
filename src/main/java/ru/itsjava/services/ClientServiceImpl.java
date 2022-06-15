@@ -14,6 +14,7 @@ public class ClientServiceImpl implements ClientService {
     private User user;
 
 
+
     @SneakyThrows
     @Override
     public void start() {
@@ -26,6 +27,9 @@ public class ClientServiceImpl implements ClientService {
             // отправляются на сервер
             MessageInputServiceImpl messageInputService = //сообщения которые считываются
                     new MessageInputServiceImpl(System.in);// с консоли
+
+            MessageInputService serverReader =
+                    new MessageInputServiceImpl(socket.getInputStream());
 
 
 //            String authorizationOrRegistration = messageInputService.getMessage();
@@ -47,6 +51,7 @@ public class ClientServiceImpl implements ClientService {
                 String consoleMessage = messageInputService.getMessage();
                 serverWriter.println(consoleMessage);
                 serverWriter.flush();
+
                 if (consoleMessage.equals("1")) {
                     System.out.println("Вы выбрали авторизацию");
                     serverWriter.println("1");
@@ -57,6 +62,10 @@ public class ClientServiceImpl implements ClientService {
                     String password = messageInputService.getMessage();
                     serverWriter.println("!autho!" + login + ":" + password);
                     serverWriter.flush();
+                    System.out.println(serverReader.getMessage());
+                    if (serverReader.getMessage().equals("Неправильный логин или пароль")) {
+                        System.out.println("Неправильный логин или пароль");
+                    }
                 } else if (consoleMessage.equals("2")) {
                     System.out.println("Вы выбрали регистрацию");
                     serverWriter.println("2");
