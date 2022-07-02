@@ -14,7 +14,6 @@ public class ClientServiceImpl implements ClientService {
     private User user;
 
 
-
     @SneakyThrows
     @Override
     public void start() {
@@ -46,12 +45,12 @@ public class ClientServiceImpl implements ClientService {
             //flush - скинуть буферизированные данные в поток(сразу пишем
             // и отправляем на сервер)
 
-            System.out.println("Введите 1 - для входа или 2 - для регистрации");
+            printMenu();
+            System.out.println("Введите номер меню");
             while (true) {
                 String consoleMessage = messageInputService.getMessage();
                 serverWriter.println(consoleMessage);
                 serverWriter.flush();
-
                 if (consoleMessage.equals("1")) {
                     System.out.println("Вы выбрали авторизацию");
                     serverWriter.println("1");
@@ -62,10 +61,9 @@ public class ClientServiceImpl implements ClientService {
                     String password = messageInputService.getMessage();
                     serverWriter.println("!autho!" + login + ":" + password);
                     serverWriter.flush();
-                    System.out.println(serverReader.getMessage());
-                    if (serverReader.getMessage().equals("Неправильный логин или пароль")) {
-                        System.out.println("Неправильный логин или пароль");
-                    }
+//                    System.out.println("Вы успешно авторизованы");
+//                } else if (serverReader.getMessage().equals("Неправильный логин или пароль")) {
+//                    System.out.println("Неправильный логин или пароль");
                 } else if (consoleMessage.equals("2")) {
                     System.out.println("Вы выбрали регистрацию");
                     serverWriter.println("2");
@@ -78,13 +76,26 @@ public class ClientServiceImpl implements ClientService {
                     serverWriter.flush();
                     System.out.println("Вы успешно зарегистрированы");
                     break;
+                } else if (consoleMessage.equals("3")) {
+                    System.out.println("Вы выбрали личную переписку");
+                    serverWriter.println("3");
+                    serverWriter.flush();
+                    System.out.println("Введите свой логин:");
+                    String login = messageInputService.getMessage();
+                    System.out.println("Введите свой пароль:");
+                    String password = messageInputService.getMessage();
+                    serverWriter.println("!autho!" + login + ":" + password);
+                    serverWriter.flush();
                 } else if (consoleMessage.equals("exit")) {
                     System.out.println("Вы покинули чат");
                     break;
                 }
             }
-
-
         }
+    }
+
+    public void printMenu() {
+        System.out.println("1 - для входа, 2 - для регистрации, " +
+                "3 - личная переписка, exit - выход");
     }
 }
